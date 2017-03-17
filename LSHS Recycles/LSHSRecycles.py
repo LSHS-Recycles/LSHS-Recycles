@@ -15,17 +15,17 @@ def makeTree(t_xPos, t_yPos, t_zPos):
 
     mc.setBlock(t_xPos, (t_yPos + 3), (t_zPos + 3), tree)
     mc.postToChat("Thanks for recycling! A tree has been planted in your honor.")
-
 class MyStreamer(TwythonStreamer):
     def on_success(self, data):
         if 'text' in data:
             x, y, z = mc.player.getPos()
             sleep(1)
             makeTree(x-5, y, z)
-            print(data['text'])
+            print data['text'].encode('utf-8')
+
+    def on_error(self, status_code, data):
+        print status_code
 stream = MyStreamer(consumer_key, consumer_secret,
 access_token, access_token_secret)
-
-
 term = "#LSHSRecycles"
 stream.statuses.filter(track='twitter')
